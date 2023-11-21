@@ -28,6 +28,7 @@ class FunctionPass;
 ModulePass *createWebAssemblyLowerEmscriptenEHSjLj();
 ModulePass *createWebAssemblyLowerGlobalDtors();
 ModulePass *createWebAssemblyAddMissingPrototypes();
+ModulePass *createWebAssemblyObjCMsgSendFuncsPass(); // gnustep 2.0 mod
 ModulePass *createWebAssemblyFixFunctionBitcasts();
 FunctionPass *createWebAssemblyOptimizeReturned();
 FunctionPass *createWebAssemblyLowerRefTypesIntPtrConv();
@@ -62,6 +63,7 @@ ModulePass *createWebAssemblyMCLowerPrePass();
 void initializeWebAssemblyAddMissingPrototypesPass(PassRegistry &);
 void initializeWebAssemblyLowerEmscriptenEHSjLjPass(PassRegistry &);
 void initializeLowerGlobalDtorsPass(PassRegistry &);
+void initializeWebAssemblyGenObjCMsgSendFuncsPass(PassRegistry &); // Gnustep 2.0 Mod
 void initializeFixFunctionBitcastsPass(PassRegistry &);
 void initializeOptimizeReturnedPass(PassRegistry &);
 void initializeWebAssemblyArgumentMovePass(PassRegistry &);

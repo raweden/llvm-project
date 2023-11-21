@@ -156,8 +156,13 @@ static const EHPersonality &getObjCPersonality(const TargetInfo &Target,
   case ObjCRuntime::WatchOS:
     return EHPersonality::NeXT_ObjC;
   case ObjCRuntime::GNUstep:
-    if (L.ObjCRuntime.getVersion() >= VersionTuple(1, 7))
-      return EHPersonality::GNUstep_ObjC;
+    if (L.ObjCRuntime.getVersion() >= VersionTuple(1, 7)) {
+      if (T.isWasm() && L.hasWasmExceptions()) {
+        return EHPersonality::GNU_Wasm_CPlusPlus;
+      } else {
+        return EHPersonality::GNUstep_ObjC;
+      }
+    }
     LLVM_FALLTHROUGH;
   case ObjCRuntime::GCC:
   case ObjCRuntime::ObjFW:
@@ -210,7 +215,12 @@ static const EHPersonality &getObjCXXPersonality(const TargetInfo &Target,
     return getObjCPersonality(Target, L);
 
   case ObjCRuntime::GNUstep:
+  {
+    if (Target.getTriple().isWasm() && L.hasWasmExceptions()) {
+      return EHPersonality::GNU_Wasm_CPlusPlus;
+    }
     return EHPersonality::GNU_ObjCXX;
+  }
 
   // The GCC runtime's personality function inherently doesn't support
   // mixed EH.  Use the ObjC personality just to avoid returning null.

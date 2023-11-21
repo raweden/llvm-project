@@ -57,6 +57,7 @@ extern "C" LLVM_EXTERNAL_VISIBILITY void LLVMInitializeWebAssemblyTarget() {
   initializeWebAssemblyAddMissingPrototypesPass(PR);
   initializeWebAssemblyLowerEmscriptenEHSjLjPass(PR);
   initializeLowerGlobalDtorsPass(PR);
+  initializeWebAssemblyGenObjCMsgSendFuncsPass(PR); // Gnustep 2.0 Mod
   initializeFixFunctionBitcastsPass(PR);
   initializeOptimizeReturnedPass(PR);
   initializeWebAssemblyArgumentMovePass(PR);
@@ -418,6 +419,9 @@ void WebAssemblyPassConfig::addIRPasses() {
 
   // Lower .llvm.global_dtors into .llvm_global_ctors with __cxa_atexit calls.
   addPass(createWebAssemblyLowerGlobalDtors());
+
+  // Fix Objective-C functions before bitcast fix (gnustep-2.0).
+  addPass(createWebAssemblyObjCMsgSendFuncsPass());
 
   // Fix function bitcasts, as WebAssembly requires caller and callee signatures
   // to match.

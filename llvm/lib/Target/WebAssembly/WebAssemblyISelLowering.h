@@ -110,7 +110,8 @@ private:
                           SelectionDAG &DAG) const override;
 
   const char *getClearCacheBuiltinName() const override {
-    report_fatal_error("llvm.clear_cache is not supported on wasm");
+    return nullptr;
+    //report_fatal_error("llvm.clear_cache is not supported on wasm");
   }
 
   // Custom lowering hooks.
